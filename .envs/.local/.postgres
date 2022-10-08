@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=python_web_developer_roadmap
+POSTGRES_USER=PJTXurjXUAeYXvrLLWLyUdXkKneEKXgM
+POSTGRES_PASSWORD=v8L107fNY83bH4nLl4EyZkD8msjelINZ2FbGgCmgmbHmQxYx8ABw6kV1K4Kn9FCp
