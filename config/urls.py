@@ -19,7 +19,11 @@ urlpatterns = [
         "users/", include("python_web_developer_roadmap.users.urls", namespace="users")
     ),
     path("accounts/", include("allauth.urls")),
-    # Your stuff: custom urls includes go here
+    # Roadmap
+    path(
+        "roadmap/",
+        include("python_web_developer_roadmap.roadmap.urls", namespace="roadmap"),
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS

@@ -1,0 +1,7 @@
+{
+  "name": "python_web_developer_roadmap",
+  "version": "0.1.0a0",
+  "dependencies": {
+    "simplemde": "1.11.2"
+  }
+}

@@ -24,7 +24,7 @@ RUN pip wheel --wheel-dir /usr/src/app/wheels  \
 
 
 # Python 'run' stage
-FROM python as python-run-stage
+FROM python as app-run-stage
 
 ARG BUILD_ENVIRONMENT=local
 ARG APP_HOME=/app
@@ -41,9 +41,16 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libpq-dev \
   # Translations dependencies
   gettext \
+  # To install frontend dependencies
+  nodejs \
+  npm \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
+
+# Install frontend dependencies
+COPY package.json ./
+RUN npm install
 
 # All absolute dir copies ignore workdir instruction. All relative dir copies are wrt to the workdir instruction
 # copy python dependency wheels from python-build-stage
