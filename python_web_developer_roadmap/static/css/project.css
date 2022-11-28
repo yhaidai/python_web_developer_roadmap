@@ -26,3 +26,7 @@ body {
 .roadmap-item:hover {
   background-color: #f5af19;
 }
+
+.editor-statusbar {
+  color: black;
+}

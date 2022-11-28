@@ -21,8 +21,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Roadmap
     path(
-        "roadmap/",
-        include("python_web_developer_roadmap.roadmap.urls", namespace="roadmap"),
+        "roadmap/", include("python_web_developer_roadmap.roadmap.urls", namespace="roadmap"),
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
