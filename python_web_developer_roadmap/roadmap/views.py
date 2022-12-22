@@ -1,18 +1,27 @@
 from django.shortcuts import render
-from django.urls import reverse
 
-from python_web_developer_roadmap.roadmap.utils import get_request
+from python_web_developer_roadmap.roadmap.api.views import RoadmapItemViewSet
+from python_web_developer_roadmap.users.models import User
 
 
-def roadmap_view(request):
-    roadmap_api_url = request.build_absolute_uri(reverse("api:roadmapitem-list"))
-    roadmap_api_response = get_request(request, roadmap_api_url)
-    roadmap_items = roadmap_api_response.json()
-
+def personal_roadmap_view(request):
+    personal_roadmap_items = RoadmapItemViewSet.queryset.filter(author=request.user.id)
     return render(
         request,
-        "roadmap/base.html",
+        "roadmap/personal_roadmap.html",
         context={
-            "roadmap_items": roadmap_items,
+            "roadmap_items": personal_roadmap_items,
+        },
+    )
+
+
+def official_roadmap_view(request):
+    admin_users = User.objects.filter(is_staff=True)
+    official_roadmap_items = RoadmapItemViewSet.queryset.filter(author__in=admin_users)
+    return render(
+        request,
+        "roadmap/official_roadmap.html",
+        context={
+            "roadmap_items": official_roadmap_items,
         },
     )

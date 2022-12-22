@@ -19,12 +19,13 @@ body {
 }
 
 .roadmap-item {
-  background-color: #bbb;
+  background-color: #BBB;
   transition: 0.8s;
 }
 
 .roadmap-item:hover {
-  background-color: #f5af19;
+  color: white;
+  background-color: #0D6EFD;
 }
 
 .editor-statusbar {

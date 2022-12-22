@@ -1,0 +1,50 @@
+{% extends "roadmap/base.html" %}
+
+{% block content %}
+  <h2>Roadmap</h2>
+  {% if roadmap_items %}
+    <div class="row">
+      {% for roadmap_item in roadmap_items %}
+        <button class="col-md-2 border border-primary rounded m-2 roadmap-item" type="button">
+          <input class="d-none uuid-input" value="{{ roadmap_item.uuid }}">
+          <input class="d-none file-input" value="{{ roadmap_item.file }}">
+          <h4 id="name-header" class="text-center">{{ roadmap_item.name }}</h4>
+        </button>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+
+  <p>
+    <button class="btn btn-primary" type="button" id="add-roadmap-item-button" data-bs-toggle="collapse" data-bs-target="#roadmap-item-collapse" aria-expanded="false" aria-controls="roadmap-item-collapse">
+      Add new Roadmap Item
+    </button>
+  </p>
+  <div class="collapse" id="roadmap-item-collapse">
+    <form id="roadmap-item-form" method="POST" action="{% url 'api:roadmap-item-list' %}">
+      {% csrf_token %}
+      <input class="d-none" name="author" id="author-input" value="{{ user }}">
+      <input class="d-none" name="parent" id="parent-input" value="">
+      <label for="name-input">Name</label><br>
+      <input name="name" id="name-input"><br><br>
+      <label for="description-markdown-editor">Description</label><br>
+      <textarea name="description" id="description-markdown-editor"></textarea>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+{% endblock %}
+
+{% block inline_javascript %}
+  {{ block.super }}
+  <!-- Start simple MDE -->
+  <script>
+    var simplemde = new SimpleMDE({
+      element: document.getElementById("description-markdown-editor"),
+      autosave: {
+        enabled: true,
+        uniqueId: "MyUniqueID",
+        delay: 1000,
+      },
+    });
+  </script>
+{% endblock %}

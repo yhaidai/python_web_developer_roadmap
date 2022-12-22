@@ -10,7 +10,7 @@ else:
     router = SimpleRouter()
 
 router.register("users", UserViewSet)
-router.register("roadmap", RoadmapItemViewSet)
+router.register("roadmap", RoadmapItemViewSet, basename='roadmap-item')
 
 
 app_name = "api"

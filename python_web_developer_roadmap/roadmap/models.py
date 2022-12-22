@@ -10,6 +10,10 @@ class RoadmapItem(models.Model):
     description = models.CharField(max_length=5000)
     name = models.CharField(max_length=50)
     parent = models.ForeignKey(
-        "RoadmapItem", on_delete=models.CASCADE, null=True, blank=True
+        "RoadmapItem", on_delete=models.CASCADE, null=True, blank=True,
     )
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    def __repr__(self):
+        return (f"RoadmapItem(author={self.author}, name={self.name}, description={self.description}, "
+                f"parent={self.parent}, uuid={self.uuid})")

@@ -8,44 +8,13 @@
 
 
 {% block javascript %}
-  {{ block.super }}
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  {{ block.super }}
 {% endblock %}
 
 
 {% block title %}
-  {% block head_title %}
-  {% endblock head_title %}
+  Roadmap
 {% endblock title %}
 
-{% block content %}
-  <h2>Roadmap</h2>
-  {% if roadmap_items %}
-    <div class="row">
-      {% for roadmap_item in roadmap_items %}
-        <div class="col-md-2 border border-primary rounded m-2 roadmap-item">
-          <h4 class="text-center">{{ roadmap_item.name }}</h4>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
 
-  <div>
-    <textarea id="markdown-editor"></textarea>
-  </div>
-{% endblock %}
-
-{% block inline_javascript %}
-  {{ block.super }}
-  <!-- Start simple MDE -->
-  <script>
-    var simplemde = new SimpleMDE({
-      element: document.getElementById("markdown-editor"),
-      autosave: {
-        enabled: true,
-        uniqueId: "MyUniqueID",
-        delay: 1000,
-      },
-    });
-  </script>
-{% endblock %}
