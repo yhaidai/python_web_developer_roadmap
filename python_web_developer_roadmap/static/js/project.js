@@ -22,14 +22,15 @@ for (let collapseToggleButton of collapseToggleButtons) {
 
 for (let roadmap_item of roadmapItems) {
     const roadmapItemUUID = roadmap_item.querySelector(".uuid-input").value;
-    const apiUrl = `${location.protocol}//${location.host}/api/roadmap/${roadmapItemUUID}/`;
+    const apiUrl = `${location.protocol}//${location.host}/api/roadmap/${roadmapItemUUID}/description`;
+    const nameHeader = document.getElementById("name-header")
     const nameInput = document.getElementById("name-input")
 
     roadmap_item.addEventListener("click", () => {
         fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
-                nameInput.value = data["name"];
+                nameInput.value = nameHeader.innerText;
                 simplemde.value(data["description"]);
             });
 
@@ -56,7 +57,7 @@ roadmapItemForm.addEventListener("submit", (e) => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            window.location.replace("http://0.0.0.0:8000/roadmap/");
+            window.location.replace("");
         })
         .catch(error => {
             console.log(error)

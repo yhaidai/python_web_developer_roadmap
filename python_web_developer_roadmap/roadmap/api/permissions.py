@@ -1,12 +1,6 @@
-from typing import Protocol
-
-from django.db import models
-
 from rest_framework import permissions
 
-
-class AuthoredModelProtocol(Protocol):
-    author: models.Field
+from ..utils import AuthoredModelProtocol
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):

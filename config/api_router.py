@@ -12,6 +12,5 @@ else:
 router.register("users", UserViewSet)
 router.register("roadmap", RoadmapItemViewSet, basename='roadmap-item')
 
-
 app_name = "api"
 urlpatterns = router.urls
