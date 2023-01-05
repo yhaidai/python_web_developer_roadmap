@@ -12,6 +12,7 @@
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
+    <EXTENSION ID="DockerComposeSettingsRunConfigurationExtension" commandLine="--file local.yml up" />
     <PathMappingSettings>
       <option name="pathMappings">
         <list>
@@ -28,6 +29,6 @@
     <option name="runNoReload" value="false" />
     <option name="useCustomRunCommand" value="false" />
     <option name="customRunCommand" value="" />
-    <method />
+    <method v="2" />
   </configuration>
 </component>

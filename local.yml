@@ -22,6 +22,8 @@ services:
     ports:
       - "8000:8000"
     command: /start
+    tty: true  # to use pdb
+    stdin_open: true  # to use pdb
 
   postgres:
     build:
