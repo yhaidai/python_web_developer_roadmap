@@ -32,20 +32,25 @@ class RoadmapItemSerializer(serializers.ModelSerializer):
         model = RoadmapItem
         fields = ("author", "name", "description", "parent", "uuid", "file_relative_path")
 
-    def get_file_relative_path(self, obj):
+    def get_file_relative_path(self, roadmap_item: RoadmapItem) -> str:
         """
         For demo purposes.
         """
-        return obj.file.name
+        return roadmap_item.file.name
 
     def create(self, validated_data: dict[str, Any]):
-        """
-        Deserialize for a POST request.
-
-        Description field is written to a file and dropped.
-        """
         file = io.StringIO(validated_data.pop("description"))
-
-        # Create roadmap item, so that we can use its UUID in the filename
         validated_data["file"] = File(file=file, name="placeholder")
         return super().create(validated_data)
+
+    def update(self, roadmap_item: RoadmapItem, validated_data: dict[str, Any]):
+        roadmap_item.name = validated_data.get("name", roadmap_item.name)
+        roadmap_item.author = validated_data.get("author", roadmap_item.author)
+        roadmap_item.parent = validated_data.get("parent", roadmap_item.parent)
+
+        with roadmap_item.file.open("w") as description_file:
+            # "description" is required
+            description_file.write(validated_data["description"])
+
+        roadmap_item.save()
+        return roadmap_item

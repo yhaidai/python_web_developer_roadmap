@@ -7,8 +7,7 @@
       {% for roadmap_item in roadmap_items %}
         <button class="col-md-2 border border-primary rounded m-2 roadmap-item" type="button">
           <input class="d-none uuid-input" value="{{ roadmap_item.uuid }}">
-          <input class="d-none file-input" value="{{ roadmap_item.file }}">
-          <h4 id="name-header" class="text-center">{{ roadmap_item.name }}</h4>
+          <h4 class="text-center name-header">{{ roadmap_item.name }}</h4>
         </button>
       {% endfor %}
     </div>
@@ -21,7 +20,7 @@
     </button>
   </p>
   <div class="collapse" id="roadmap-item-collapse">
-    <form id="roadmap-item-form" method="POST" action="{% url 'api:roadmap-item-list' %}">
+    <form id="roadmap-item-form">
       {% csrf_token %}
       <input class="d-none" name="author" id="author-input" value="{{ user }}">
       <input class="d-none" name="parent" id="parent-input" value="">
@@ -40,6 +39,10 @@
   <script>
     var simplemde = new SimpleMDE({
       element: document.getElementById("description-markdown-editor"),
+      renderingConfig: {
+        codeSyntaxHighlighting: true,
+      },
+      showIcons: ["code", "table", "strikethrough", "horizontal-rule"],
     });
   </script>
 {% endblock %}

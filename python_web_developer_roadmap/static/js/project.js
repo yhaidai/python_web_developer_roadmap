@@ -2,15 +2,27 @@ const roadmapItems = document.getElementsByClassName("roadmap-item");
 const collapse = document.getElementById("roadmap-item-collapse")
 const addRoadmapItemButton = document.getElementById("add-roadmap-item-button");
 const collapseToggleButtons = Array.from(roadmapItems).concat([addRoadmapItemButton])
+const nameInput = document.getElementById("name-input")
 let isCollapseShown = false;
+let formMethod = null
+let formActionUrl = null
 
 /* Change text of the button on collapse toggling */
 addRoadmapItemButton.addEventListener("click", () => {
     isCollapseShown = !isCollapseShown;
+
+    if (isCollapseShown) {
+        formMethod = "POST"
+        formActionUrl = `${location.protocol}//${location.host}/api/roadmap/`;
+    } else {
+        simplemde.value("")
+        nameInput.value = ""
+    }
 })
 
 for (let collapseToggleButton of collapseToggleButtons) {
     collapseToggleButton.addEventListener("click", () => {
+        // TODO: fix caption logic
         if (isCollapseShown) {
             addRoadmapItemButton.innerText = "Hide";
         } else {
@@ -21,12 +33,15 @@ for (let collapseToggleButton of collapseToggleButtons) {
 
 
 for (let roadmap_item of roadmapItems) {
-    const roadmapItemUUID = roadmap_item.querySelector(".uuid-input").value;
-    const apiUrl = `${location.protocol}//${location.host}/api/roadmap/${roadmapItemUUID}/description`;
-    const nameHeader = document.getElementById("name-header")
-    const nameInput = document.getElementById("name-input")
+    const nameHeader = roadmap_item.querySelector(".name-header");
 
     roadmap_item.addEventListener("click", () => {
+        // submitting the form after opening one of the roadmap items should "update" instead of "create"
+        const roadmapItemUUID = roadmap_item.querySelector(".uuid-input").value;
+        formMethod = "PATCH"
+        formActionUrl = `${location.protocol}//${location.host}/api/roadmap/${roadmapItemUUID}/`;
+
+        const apiUrl = `${formActionUrl}description`;
         fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
@@ -47,12 +62,12 @@ roadmapItemForm.addEventListener("submit", (e) => {
     e.preventDefault()
     const data = new FormData(roadmapItemForm);
 
-    fetch(roadmapItemForm.action, {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-        },
+    fetch(formActionUrl, {
+        method: formMethod,
         body: data,
+        headers: {
+            'X-CSRFToken': document.getElementsByName("csrfmiddlewaretoken")[0].value
+        },
     })
         .then(response => response.json())
         .then(data => {

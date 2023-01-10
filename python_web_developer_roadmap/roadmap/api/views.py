@@ -1,5 +1,6 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.request import Request
 from rest_framework.response import Response
 
 from .permissions import IsAuthorOrReadOnly
@@ -14,7 +15,7 @@ class RoadmapItemViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthorOrReadOnly, )
 
     @action(detail=True, url_path="description")
-    def get_description(self, request, uuid=None):
+    def get_description(self, request: Request, uuid: str=None) -> Response:
         """
         Retrieve the contents of the roadmap item's file.
 
