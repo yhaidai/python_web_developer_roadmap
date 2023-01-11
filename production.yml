@@ -44,6 +44,38 @@ services:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
 
+  celery:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: python_web_developer_roadmap_production_celery
+    container_name: python_web_developer_roadmap_production_celery
+    command: celery -A roadmap worker -l info
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
+      - ./.envs/.production/.celery
+    depends_on:
+      - redis
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: python_web_developer_roadmap_production_celery_beat
+    container_name: python_web_developer_roadmap_production_celery_beat
+    command: celery -A roadmap beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
+      - ./.envs/.production/.celery
+    depends_on:
+      - redis
+
   redis:
     image: redis:6
 

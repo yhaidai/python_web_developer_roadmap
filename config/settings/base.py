@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+from celery.schedules import crontab
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # python_web_developer_roadmap/
@@ -75,6 +76,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
+    "django_celery_beat",
 ]
 
 LOCAL_APPS = [
@@ -308,5 +310,13 @@ SPECTACULAR_SETTINGS = {
         },
     ],
 }
-# Your stuff...
-# ------------------------------------------------------------------------------
+
+# Celery
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BEAT_SCHEDULE = {
+    "orphaned_files_cleanup": {
+        "task": "python_web_developer_roadmap.roadmap.tasks.orphaned_files_cleanup",
+        "schedule": crontab(minute="*/1"),
+    },
+}

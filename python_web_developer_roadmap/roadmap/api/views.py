@@ -13,6 +13,8 @@ class RoadmapItemViewSet(viewsets.ModelViewSet):
     queryset = RoadmapItem.objects.all()
     serializer_class = RoadmapItemSerializer
     permission_classes = (IsAuthorOrReadOnly, )
+    # Disable "PUT" method
+    http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ["put"]]
 
     @action(detail=True, url_path="description")
     def get_description(self, request: Request, uuid: str=None) -> Response:

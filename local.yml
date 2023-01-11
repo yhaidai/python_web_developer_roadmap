@@ -14,6 +14,7 @@ services:
     platform: linux/x86_64
     depends_on:
       - postgres
+#      - redis
     volumes:
       - .:/app:z
     env_file:
@@ -36,6 +37,41 @@ services:
       - python_web_developer_roadmap_local_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.local/.postgres
+
+  redis:
+    image: redis:alpine
+
+  celery:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: python_web_developer_roadmap_local_celery
+    container_name: python_web_developer_roadmap_local_celery
+    command: celery -A python_web_developer_roadmap worker -l info
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+      - ./.envs/.local/.celery
+    depends_on:
+      - redis
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: python_web_developer_roadmap_local_celery_beat
+    container_name: python_web_developer_roadmap_local_celery_beat
+    command: celery -A python_web_developer_roadmap beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+      - ./.envs/.local/.celery
+    depends_on:
+      - redis
 
   docs:
     image: python_web_developer_roadmap_local_docs
