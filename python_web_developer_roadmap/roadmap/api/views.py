@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle
 
 from .permissions import IsAuthorOrReadOnly
 from ..models import RoadmapItem
@@ -13,6 +14,7 @@ class RoadmapItemViewSet(viewsets.ModelViewSet):
     queryset = RoadmapItem.objects.all()
     serializer_class = RoadmapItemSerializer
     permission_classes = (IsAuthorOrReadOnly, )
+    throttle_classes = (UserRateThrottle, )
     # Disable "PUT" method
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ["put"]]
 
