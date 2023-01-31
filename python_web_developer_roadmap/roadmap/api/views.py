@@ -4,6 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
 
+from .pagination import StandardPageNumberPagination
 from .permissions import IsAuthorOrReadOnly
 from ..models import RoadmapItem
 from .serializers import RoadmapItemSerializer
@@ -13,6 +14,7 @@ class RoadmapItemViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
     queryset = RoadmapItem.objects.all()
     serializer_class = RoadmapItemSerializer
+    pagination_class = StandardPageNumberPagination
     permission_classes = (IsAuthorOrReadOnly, )
     throttle_classes = (UserRateThrottle, )
     # Disable "PUT" method
