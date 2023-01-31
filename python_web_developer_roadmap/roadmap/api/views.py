@@ -17,7 +17,7 @@ class RoadmapItemViewSet(viewsets.ModelViewSet):
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ["put"]]
 
     @action(detail=True, url_path="description")
-    def get_description(self, request: Request, uuid: str=None) -> Response:
+    def get_description(self, request: Request, uuid: str = None) -> Response:
         """
         Retrieve the contents of the roadmap item's file.
 

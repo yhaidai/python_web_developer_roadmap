@@ -1,11 +1,20 @@
 from django.shortcuts import render
+from django.views.decorators.http import require_safe
 
 from python_web_developer_roadmap.roadmap.api.views import RoadmapItemViewSet
 from python_web_developer_roadmap.users.models import User
 
 
+@require_safe
 def personal_roadmap_view(request):
-    personal_roadmap_items = RoadmapItemViewSet.queryset.filter(author=request.user.id)
+    name_contains = request.GET.get("name_contains")
+    if name_contains is None:
+        personal_roadmap_items = RoadmapItemViewSet.queryset.filter(author=request.user.id)
+    else:
+        personal_roadmap_items = RoadmapItemViewSet.queryset.filter(
+            author=request.user.id, name__icontains=name_contains,
+        )
+
     return render(
         request,
         "roadmap/personal_roadmap.html",
