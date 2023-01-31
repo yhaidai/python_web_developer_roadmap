@@ -22,6 +22,9 @@ class RoadmapItem(models.Model):
     )
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
+    class Meta:
+        ordering = ("name", )
+
     def __str__(self) -> str:
         return f"Roadmap Item: {self.name}"
 
